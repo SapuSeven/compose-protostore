@@ -1,10 +1,12 @@
-# ProtoStore
+# Compose-ProtoStore
 
-A library for storing typed objects with Proto DataStore and building a matching UI.
+A compose library for storing typed objects with Proto DataStore and building a matching UI.
 
 Useful for application preferences including multi-profile support.
 
 ## Installation
+
+_⚠ The library is not published yet - this is just a placeholder!_
 
 ```groovy
 dependencies {
