@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.jetbrains.kotlin.android)
 }
 
 android {
@@ -8,7 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -42,22 +42,22 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
 
     // Compose and Material3
-    implementation("androidx.compose.ui:ui:1.6.3")
-    implementation("androidx.compose.material3:material3:1.1.2")
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.material3)
 
     // DataStore and Protobuf
-    implementation("androidx.datastore:datastore:1.1.1")
-    implementation("com.google.protobuf:protobuf-javalite:4.28.0")
+    implementation(libs.androidx.datastore)
+    implementation(libs.protobuf.javalite)
 
     // Utils
-    implementation("com.github.ajalt.colormath:colormath:3.2.0")
+    implementation(libs.colormath)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

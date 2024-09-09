@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "compose-protostore"
 include(":app")
+include(":protostore")
