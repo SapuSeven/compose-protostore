@@ -10,7 +10,7 @@ Useful for application preferences including multi-profile support.
 
 ```groovy
 dependencies {
-    // Latest version: See above
+	// Latest version: See above
 	implementation "com.sapuseven.compose:protostore:VERSION"
 }
 ```
