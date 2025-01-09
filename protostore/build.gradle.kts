@@ -1,7 +1,62 @@
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.maven.publish)
+}
+
+mavenPublishing {
+    coordinates("com.sapuseven.compose", "protostore", "0.1.0")
+
+    configure(AndroidSingleVariantLibrary(
+        variant = "release",
+        sourcesJar = true,
+        publishJavadocJar = true,
+    ))
+
+    pom {
+        name.set("Compose-ProtoStore")
+        description.set("A compose library for storing typed objects with Proto DataStore and building a matching UI.")
+        inceptionYear.set("2025")
+        url.set("https://github.com/SapuSeven/compose-protostore")
+        licenses {
+            license {
+                name.set("The MIT License")
+                url.set("https://opensource.org/licenses/MIT")
+            }
+        }
+        developers {
+            developer {
+                id.set("sapuseven")
+                name.set("SapuSeven")
+                url.set("https://sapuseven.com")
+            }
+        }
+        scm {
+            url.set("https://github.com/SapuSeven/compose-protostore")
+            connection.set("scm:git:git://github.com/SapuSeven/compose-protostore.git")
+            developerConnection.set("scm:git:ssh://git@github.com/SapuSeven/compose-protostore.git")
+        }
+    }
+
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/SapuSeven/compose-protostore")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+            }
+        }
+    }
 }
 
 android {

@@ -4,14 +4,14 @@ A compose library for storing typed objects with Proto DataStore and building a 
 
 Useful for application preferences including multi-profile support.
 
-## Installation
+<a href="https://central.sonatype.com/artifact/com.sapuseven.compose/protostore">![Maven Central Version](https://img.shields.io/maven-central/v/com.sapuseven.compose/protostore?style=for-the-badge)</a>
 
-_⚠ The library is not published yet - this is just a placeholder!_
+## Installation
 
 ```groovy
 dependencies {
-	implementation "com.sapuseven.compose:protostore:1.0.0"
-	//...
+    // Latest version: See above
+	implementation "com.sapuseven.compose:protostore:VERSION"
 }
 ```
 
