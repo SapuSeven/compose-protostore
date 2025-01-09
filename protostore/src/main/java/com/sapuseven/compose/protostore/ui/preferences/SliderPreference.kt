@@ -25,7 +25,6 @@ import java.util.Locale
 fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SliderPreference(
 	title: (@Composable () -> Unit),
 	summary: (@Composable () -> Unit)? = null,
-	//supportingContent: @Composable ((value: Float, enabled: Boolean) -> Unit)? = null,
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: @Composable ((value: Float, enabled: Boolean) -> Unit)? = null,
 	settingsRepository: SettingsRepository<Model, ModelBuilder>,

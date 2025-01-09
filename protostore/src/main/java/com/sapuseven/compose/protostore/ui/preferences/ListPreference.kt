@@ -22,7 +22,6 @@ import kotlinx.coroutines.launch
 fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ListPreference(
 	title: (@Composable () -> Unit),
 	summary: (@Composable () -> Unit)? = null,
-	//summary: @Composable ((selected: Pair<String, String>) -> Unit)? = null,
 	supportingContent: @Composable ((value: Pair<String, String>, enabled: Boolean) -> Unit)? = null,
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: (@Composable (value: String, enabled: Boolean) -> Unit)? = null,

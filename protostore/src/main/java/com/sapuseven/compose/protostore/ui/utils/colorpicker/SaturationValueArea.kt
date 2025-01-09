@@ -1,13 +1,16 @@
 package com.sapuseven.compose.protostore.ui.utils.colorpicker
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.drag
 import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
@@ -32,10 +35,12 @@ import com.github.ajalt.colormath.model.HSV
  */
 @Composable
 internal fun SaturationValueArea(
-    modifier: Modifier = Modifier,
-    currentColor: HsvColor,
-    onSaturationValueChanged: (saturation: Float, value: Float) -> Unit
+	modifier: Modifier = Modifier,
+	cornerRadius: CornerRadius = CornerRadius.Zero,
+	currentColor: HsvColor,
+	onSaturationValueChanged: (saturation: Float, value: Float) -> Unit
 ) {
+	val outlineColor = MaterialTheme.colorScheme.outline
 	val blackGradientBrush = remember {
 		Brush.verticalGradient(listOf(Color(0xffffffff), Color(0xff000000)))
 	}
@@ -55,26 +60,24 @@ internal fun SaturationValueArea(
 		modifier = modifier
 			.fillMaxSize()
 			.pointerInput(Unit) {
-				forEachGesture {
-					awaitPointerEventScope {
-						val down = awaitFirstDown()
-						val (s, v) = getSaturationPoint(down.position, size)
-						onSaturationValueChanged(s, v)
-						drag(down.id) { change ->
-							if (change.positionChange() != Offset.Zero) change.consume()
-							val (newSaturation, newValue) = getSaturationPoint(
-								change.position,
-								size
-							)
-							onSaturationValueChanged(newSaturation, newValue)
-						}
+				awaitEachGesture {
+					val down = awaitFirstDown()
+					val (s, v) = getSaturationPoint(down.position, size)
+					onSaturationValueChanged(s, v)
+					drag(down.id) { change ->
+						if (change.positionChange() != Offset.Zero) change.consume()
+						val (newSaturation, newValue) = getSaturationPoint(
+							change.position,
+							size
+						)
+						onSaturationValueChanged(newSaturation, newValue)
 					}
 				}
 			}
 	) {
-		drawRect(blackGradientBrush)
-		drawRect(currentColorGradientBrush, blendMode = BlendMode.Modulate)
-		drawRect(Color.Gray, style = Stroke(0.5.dp.toPx()))
+		drawRoundRect(blackGradientBrush, cornerRadius = cornerRadius)
+		drawRoundRect(currentColorGradientBrush, cornerRadius = cornerRadius, blendMode = BlendMode.Modulate)
+		drawRoundRect(outlineColor, cornerRadius = cornerRadius, style = Stroke(1.dp.toPx()))
 
 		drawCircleSelector(currentColor)
 	}

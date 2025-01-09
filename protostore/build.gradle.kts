@@ -52,6 +52,8 @@ dependencies {
 
     // Utils
     implementation(libs.colormath)
+    implementation(libs.androidx.lifecycle.viewmodel.android)
+    implementation(libs.androidx.ui.tooling.preview.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
