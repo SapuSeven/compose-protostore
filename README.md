@@ -6,22 +6,23 @@ Useful for application preferences including multi-profile support.
 
 <a href="https://central.sonatype.com/artifact/com.sapuseven.compose/protostore">![Maven Central Version](https://img.shields.io/maven-central/v/com.sapuseven.compose/protostore?style=for-the-badge)</a>
 
-  * [Installation](#installation)
-  * [DataStore setup](#datastore-setup)
-  * [Building a settings screen](#building-a-settings-screen)
-  * [Accessing settings in your app](#accessing-settings-in-your-app)
+  * [**Installation**](#installation)
+  * [**Setup**: DataStore](#setup-datastore)
+  * [**Usage**: Building a settings screen](#usage-building-a-settings-screen)
+  * [**Usage**: Accessing settings in your app](#usage-accessing-settings-in-your-app)
+  * [More examples](#more-examples)
   * [About](#about)
 
 ## Installation
 
 ```groovy
 dependencies {
-	// Latest version: See above
+	// Latest version: See badge above
 	implementation "com.sapuseven.compose:protostore:VERSION"
 }
 ```
 
-## DataStore setup
+## Setup: DataStore
 
 ### Setup Protobuf and DataStore
 
@@ -219,7 +220,7 @@ class SettingsScreenViewModel @Inject constructor(
 }
 ```
 
-## Building a settings screen
+## Usage: Building a settings screen
 
 Once your model is defined, you can use the composables from the `com.sapuseven.protostore.ui.preferences` package
 to build your settings screen:
@@ -238,7 +239,7 @@ fun Settings() {
 }
 ```
 
-## Accessing settings in your app
+## Usage: Accessing settings in your app
 
 To access the stored values, you need to get an instance of your `SettingsRepository` implementation.
 
@@ -255,6 +256,12 @@ scope.launch {
     settingsRepository.getSettings().map { it.exampleValue }.first()
 }
 ```
+
+## More examples
+
+The following apps use this library to implement user preferences and can be used as a reference:
+
+- [SapuSeven/BetterUntis](https://github.com/SapuSeven/BetterUntis)
 
 ## About
 
