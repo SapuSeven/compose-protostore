@@ -6,6 +6,12 @@ Useful for application preferences including multi-profile support.
 
 <a href="https://central.sonatype.com/artifact/com.sapuseven.compose/protostore">![Maven Central Version](https://img.shields.io/maven-central/v/com.sapuseven.compose/protostore?style=for-the-badge)</a>
 
+  * [Installation](#installation)
+  * [DataStore setup](#datastore-setup)
+  * [Building a settings screen](#building-a-settings-screen)
+  * [Accessing settings in your app](#accessing-settings-in-your-app)
+  * [About](#about)
+
 ## Installation
 
 ```groovy
