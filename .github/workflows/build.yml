@@ -20,12 +20,12 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build library
-      run: ./gradlew --no-daemon :protostore:build
+      run: ./gradlew --no-daemon :protostore:assemble
     - name: Archive build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: protostore-android-library
-        path: protostore/build/outputs/aar 
+        path: protostore/build/outputs/aar/*.aar
 
   publish:
     runs-on: ubuntu-latest
