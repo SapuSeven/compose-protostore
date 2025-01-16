@@ -61,8 +61,7 @@ fun <Model : MessageLite, Value> Preference(
 	val data by settingsRepository.getSettings().collectAsState(null)
 	val interactionSource = remember { MutableInteractionSource() }
 
-	val isEnabled = settingsRepository.getSettings().map { enabledCondition(it) }
-		.collectAsState(initial = true)
+	val isEnabled = remember { settingsRepository.getSettings().map { enabledCondition(it) } }.collectAsState(initial = true)
 
 	if (highlight)
 		LaunchedEffect(Unit) {
