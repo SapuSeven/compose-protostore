@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import com.google.protobuf.MessageLite
 import com.sapuseven.compose.protostore.data.SettingsRepository
+import com.sapuseven.compose.protostore.ui.utils.LocalListItemColors
 import com.sapuseven.compose.protostore.ui.utils.conditional
 import com.sapuseven.compose.protostore.ui.utils.disabled
 import com.sapuseven.compose.protostore.ui.utils.ifNotNull
@@ -98,6 +100,7 @@ fun <Model : MessageLite, Value> Preference(
 			}
 		},
 		trailingContent = { data?.let { trailingContent?.invoke(value(it), isEnabled.value) } },
+		colors = LocalListItemColors.current ?: ListItemDefaults.colors(),
 		modifier = modifier
 			.conditional(isEnabled.value) {
 				ifNotNull(onClick) { onClick ->
@@ -165,6 +168,7 @@ fun Preference(
 			}
 		},
 		trailingContent = { trailingContent?.invoke(isEnabled) },
+		colors = LocalListItemColors.current ?: ListItemDefaults.colors(),
 		modifier = modifier
 			.conditional(isEnabled) {
 				ifNotNull(onClick) { onClick ->
