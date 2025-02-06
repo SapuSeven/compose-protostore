@@ -20,3 +20,5 @@ jobs:
         java-version: 17
     - name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@v4
+      with:
+        dependency-graph-exclude-configurations: '.*[Tt]est(Compile|Runtime)Classpath'
