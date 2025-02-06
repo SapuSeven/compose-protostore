@@ -10,7 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout sources
+      uses: actions/checkout@v4
     - name: set up Java
       uses: actions/setup-java@v4
       with:
@@ -20,7 +21,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
     - name: Build library
-      run: ./gradlew --no-daemon --scan :protostore:assemble
+      run: ./gradlew --no-daemon :protostore:assemble
     - name: Archive build artifacts
       uses: actions/upload-artifact@v4
       with:
