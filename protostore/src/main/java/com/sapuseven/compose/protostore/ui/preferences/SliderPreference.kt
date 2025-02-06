@@ -43,7 +43,8 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SliderPreference(
 		summary = summary,
 		supportingContent = { currentValue, enabled ->
 			Row(
-				verticalAlignment = Alignment.CenterVertically
+				verticalAlignment = Alignment.CenterVertically,
+				modifier = Modifier.padding(top = 8.dp)
 			) {
 				Slider(
 					modifier = Modifier.weight(1f),
