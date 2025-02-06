@@ -47,6 +47,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> InputPreference(
 	enabledCondition: (Model) -> Boolean = { true },
 	highlight: Boolean = false,
 	onValueChange: (ModelBuilder.(checked: String) -> Unit)? = null,
+	modifier: Modifier = Modifier,
 ) {
 	var dialogValue by remember { mutableStateOf("") }
 	var showDialog by remember { mutableStateOf(false) }
@@ -69,7 +70,8 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> InputPreference(
 		onClick = {
 			dialogValue = it
 			showDialog = true
-		}
+		},
+		modifier = modifier
 	)
 
 	if (showDialog) {

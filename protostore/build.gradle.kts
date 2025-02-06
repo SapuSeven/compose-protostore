@@ -9,7 +9,7 @@ plugins {
 }
 
 mavenPublishing {
-    coordinates("com.sapuseven.compose", "protostore", "0.1.0")
+    coordinates("com.sapuseven.compose", "protostore", "0.1.1")
 
     configure(AndroidSingleVariantLibrary(
         variant = "release",
@@ -18,7 +18,7 @@ mavenPublishing {
     ))
 
     pom {
-        name.set("Compose-ProtoStore")
+        name.set("Compose ProtoStore")
         description.set("A compose library for storing typed objects with Proto DataStore and building a matching UI.")
         inceptionYear.set("2025")
         url.set("https://github.com/SapuSeven/compose-protostore")

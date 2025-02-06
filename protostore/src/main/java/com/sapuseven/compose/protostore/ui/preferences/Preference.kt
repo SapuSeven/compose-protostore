@@ -6,7 +6,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,7 +42,6 @@ import kotlinx.coroutines.launch
  * @param scope A coroutine scope to launch coroutines in.
  * @param onClick A function that is called when the preference is clicked.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <Model : MessageLite, Value> Preference(
 	title: (@Composable () -> Unit),
@@ -57,6 +55,7 @@ fun <Model : MessageLite, Value> Preference(
 	highlight: Boolean = false,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	onClick: ((value: Value) -> Unit)? = null,
+	modifier: Modifier = Modifier,
 ) {
 	val data by settingsRepository.getSettings().collectAsState(null)
 	val interactionSource = remember { MutableInteractionSource() }
@@ -99,7 +98,7 @@ fun <Model : MessageLite, Value> Preference(
 			}
 		},
 		trailingContent = { data?.let { trailingContent?.invoke(value(it), isEnabled.value) } },
-		modifier = Modifier
+		modifier = modifier
 			.conditional(isEnabled.value) {
 				ifNotNull(onClick) { onClick ->
 					clickable(
@@ -115,7 +114,6 @@ fun <Model : MessageLite, Value> Preference(
  * A basic preference without any associated value.
  * Can be used to provide custom onClick actions.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Preference(
 	title: (@Composable () -> Unit),
@@ -127,6 +125,7 @@ fun Preference(
 	highlight: Boolean = false,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	onClick: (() -> Unit)? = null,
+	modifier: Modifier = Modifier,
 ) {
 	val interactionSource = remember { MutableInteractionSource() }
 
@@ -166,7 +165,7 @@ fun Preference(
 			}
 		},
 		trailingContent = { trailingContent?.invoke(isEnabled) },
-		modifier = Modifier
+		modifier = modifier
 			.conditional(isEnabled) {
 				ifNotNull(onClick) { onClick ->
 					clickable(

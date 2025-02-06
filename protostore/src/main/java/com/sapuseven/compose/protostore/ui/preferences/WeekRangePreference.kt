@@ -43,6 +43,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> WeekRangePreferenc
 	enabledCondition: (Model) -> Boolean = { true },
 	highlight: Boolean = false,
 	onValueChange: (ModelBuilder.(value: Set<String>) -> Unit)? = null,
+	modifier: Modifier = Modifier,
 ) {
 	var dialogValue by remember { mutableStateOf(emptySet<String>()) }
 	var showDialog by remember { mutableStateOf(false) }
@@ -81,6 +82,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> WeekRangePreferenc
 			dialogValue = it.toSet()
 			showDialog = true
 		},
+		modifier = modifier
 	)
 
 	if (showDialog)

@@ -3,6 +3,7 @@ package com.sapuseven.compose.protostore.ui.preferences
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import com.google.protobuf.MessageLite
 import com.sapuseven.compose.protostore.data.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +21,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SwitchPreference(
 	enabledCondition: (Model) -> Boolean = { true },
 	highlight: Boolean = false,
 	onValueChange: (ModelBuilder.(checked: Boolean) -> Unit)? = null,
+	modifier: Modifier = Modifier,
 ) {
 	Preference(
 		title = title,
@@ -50,6 +52,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SwitchPreference(
 					onValueChange?.invoke(this, !currentValue)
 				}
 			}
-		}
+		},
+		modifier = modifier
 	)
 }

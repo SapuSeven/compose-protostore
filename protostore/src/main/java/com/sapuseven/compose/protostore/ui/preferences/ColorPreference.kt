@@ -89,6 +89,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 	showAlphaSlider: Boolean = false,
 	defaultValueLabel: String? = null,
 	onValueChange: (ModelBuilder.(value: Int) -> Unit)? = null,
+	modifier: Modifier = Modifier,
 ) {
 	var dialogValue by remember { mutableIntStateOf(0) }
 	var showDialog by remember { mutableStateOf(false) }
@@ -116,7 +117,8 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 		onClick = {
 			dialogValue = it
 			showDialog = true
-		}
+		},
+		modifier = modifier
 	)
 
 	if (showDialog) {

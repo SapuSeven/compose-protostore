@@ -12,7 +12,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PreferenceGroup(
 	title: String,
-	children: (@Composable () -> Unit) = {}
+	modifier: Modifier = Modifier,
+	children: (@Composable () -> Unit) = {},
 ) {
 	Text(
 		text = title,
@@ -20,7 +21,9 @@ fun PreferenceGroup(
 		color = MaterialTheme.colorScheme.primary,
 		modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
 	)
-	Column {
+	Column(
+		modifier = modifier
+	) {
 		children()
 	}
 	HorizontalDivider(

@@ -33,6 +33,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ListPreference(
 	entries: Array<String>, // Compatibility with legacy array resources
 	entryLabels: Array<String>, // Compatibility with legacy array resources
 	onValueChange: (ModelBuilder.(value: String) -> Unit)? = null,
+	modifier: Modifier = Modifier,
 ) {
 	var dialogValue by remember { mutableStateOf("") }
 	var showDialog by remember { mutableStateOf(false) }
@@ -58,7 +59,8 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ListPreference(
 		onClick = {
 			dialogValue = it
 			showDialog = true
-		}
+		},
+		modifier = modifier
 	)
 
 	if (showDialog)

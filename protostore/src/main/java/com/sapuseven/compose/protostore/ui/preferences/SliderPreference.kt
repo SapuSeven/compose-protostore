@@ -36,6 +36,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SliderPreference(
 	@IntRange(from = 0) steps: Int = 0,
 	showSeekBarValue: Boolean = false,
 	onValueChange: (ModelBuilder.(value: Float) -> Unit)? = null,
+	modifier: Modifier = Modifier,
 ) {
 	Preference(
 		title = title,
@@ -83,6 +84,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SliderPreference(
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,
-		highlight = highlight
+		highlight = highlight,
+		modifier = modifier
 	)
 }
