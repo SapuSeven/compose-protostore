@@ -22,6 +22,10 @@ abstract class MultiUserSettingsRepository <
 		return _dataStore.data.map { userSettings -> getUserSettings(userSettings) }
 	}
 
+	fun getAllSettings(): Flow<SettingsType> {
+		return _dataStore.data
+	}
+
 	@Suppress("UNCHECKED_CAST")
 	override suspend fun updateSettings(update: UserSettingsBuilderType.() -> Unit) {
 		_dataStore.updateData { currentData ->
