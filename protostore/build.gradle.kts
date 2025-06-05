@@ -9,7 +9,7 @@ plugins {
 }
 
 mavenPublishing {
-    coordinates("com.sapuseven.compose", "protostore", "0.1.2")
+    coordinates("com.sapuseven.compose", "protostore", "0.2.0")
 
     configure(AndroidSingleVariantLibrary(
         variant = "release",

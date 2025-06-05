@@ -48,6 +48,7 @@ import com.sapuseven.compose.protostore.R
 import com.sapuseven.compose.protostore.data.SettingsRepository
 import com.sapuseven.compose.protostore.ui.utils.colorpicker.ColorPicker
 import com.sapuseven.compose.protostore.ui.utils.disabled
+import com.sapuseven.compose.protostore.ui.utils.ifNotNull
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -87,11 +88,12 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 	enabledCondition: (Model) -> Boolean = { true },
 	highlight: Boolean = false,
 	showAlphaSlider: Boolean = false,
-	defaultValueLabel: String? = null,
-	onValueChange: (ModelBuilder.(value: Int) -> Unit)? = null,
+	defaultColor: Color? = null,
+	defaultColorLabel: String? = null,
+	onValueChange: (ModelBuilder.(value: Int?) -> Unit)? = null,
 	modifier: Modifier = Modifier,
 ) {
-	var dialogValue by remember { mutableIntStateOf(0) }
+	var dialogValue by remember { mutableStateOf<Color?>(null) }
 	var showDialog by remember { mutableStateOf(false) }
 
 	Preference(
@@ -115,26 +117,26 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 		enabledCondition = enabledCondition,
 		highlight = highlight,
 		onClick = {
-			dialogValue = it
+			dialogValue = Color(it)
 			showDialog = true
 		},
 		modifier = modifier
 	)
 
 	if (showDialog) {
-		val defaultColor = Color(value(settingsRepository.getSettingsDefaults()))
-
-		val color = Color(dialogValue);
+		val visibleColor = dialogValue ?: defaultColor ?: Color.Unspecified
 		val presetColors = remember {
-			materialColors.plus(
-				if (defaultValueLabel == null)
-					defaultColor
-				else
-					Color.Black
-			)
+			defaultColor?.let {
+				materialColors.plus(
+					if (defaultColorLabel == null)
+						it
+					else
+						Color.Black
+				)
+			} ?: materialColors
 		}
 
-		var selectedPreset by remember { mutableIntStateOf(presetColors.indexOf(color)) }
+		var selectedPreset by remember { mutableIntStateOf(presetColors.indexOf(dialogValue)) }
 		var advanced by remember { mutableStateOf(false) }
 
 		key(advanced) {
@@ -147,9 +149,9 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 						ColorPicker(
 							modifier = Modifier.height(320.dp),
 							alphaChannel = showAlphaSlider,
-							initialColor = color,
+							initialColor = visibleColor,
 							onColorChanged = { newColor ->
-								dialogValue = newColor.toArgb()
+								dialogValue = newColor
 							}
 						)
 					} else {
@@ -162,18 +164,18 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 								content = {
 									items(presetColors.size) { index ->
 										ColorBox(
-											color = presetColors[index].copy(alpha = color.alpha),
+											color = presetColors[index].copy(alpha = visibleColor.alpha),
 											selected = selectedPreset == index,
 											onSelect = {
 												selectedPreset = index
-												dialogValue = it.toArgb()
+												dialogValue = it
 											}
 										)
 									}
 								}
 							)
 
-							defaultValueLabel?.let {
+							defaultColorLabel?.let {
 								Row(
 									verticalAlignment = Alignment.CenterVertically,
 									modifier = Modifier
@@ -181,33 +183,34 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 										.clip(RoundedCornerShape(50))
 										.clickable {
 											selectedPreset = -1
-											dialogValue = defaultColor.toArgb()
+											dialogValue = null
 										}
 								) {
 									ColorBox(
-										color = defaultColor,
-										selected = color == defaultColor,
-										onSelect = {
-											selectedPreset = -1
-											dialogValue = it.toArgb()
-										}
+										color = defaultColor ?: Color.Unspecified,
+										selected = dialogValue == null
 									)
 
 									Text(
 										modifier = Modifier.padding(horizontal = 4.dp),
 										style = MaterialTheme.typography.bodyLarge,
-										text = defaultValueLabel
+										text = defaultColorLabel
 									)
 								}
 							}
 
 							if (showAlphaSlider) {
 								Slider(
-									value = color.alpha,
+									value = visibleColor.alpha,
 									onValueChange = {
-										dialogValue = color.copy(alpha = it).toArgb()
+										dialogValue = visibleColor.copy(alpha = it)
 									},
-									track = { SliderDefaults.Track(sliderState = it, drawStopIndicator = null) },
+									track = {
+										SliderDefaults.Track(
+											sliderState = it,
+											drawStopIndicator = null
+										)
+									},
 									modifier = Modifier.fillMaxWidth()
 								)
 							}
@@ -223,9 +226,11 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 							onClick = {
 								advanced = !advanced
 							}) {
-							Text(stringResource(
-								if (advanced) R.string.colorpicker_presets else R.string.colorpicker_custom
-							))
+							Text(
+								stringResource(
+									if (advanced) R.string.colorpicker_presets else R.string.colorpicker_custom
+								)
+							)
 						}
 
 						Spacer(modifier = Modifier.weight(1f))
@@ -241,7 +246,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 								showDialog = false
 								scope.launch {
 									settingsRepository.updateSettings {
-										onValueChange?.invoke(this, color.toArgb())
+										onValueChange?.invoke(this, dialogValue?.toArgb())
 									}
 								}
 							}) {
@@ -258,7 +263,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 fun ColorBox(
 	color: Color,
 	selected: Boolean,
-	onSelect: (Color) -> Unit
+	onSelect: ((Color) -> Unit)? = null
 ) {
 	Box(
 		modifier = Modifier
@@ -267,6 +272,11 @@ fun ColorBox(
 			.clip(CircleShape)
 			.background(MaterialTheme.colorScheme.surface)
 			.background(color)
+			.ifNotNull(onSelect) {
+				clickable {
+					it(color)
+				}
+			}
 			.border(
 				1.dp,
 				MaterialTheme.colorScheme.outline,
@@ -277,10 +287,7 @@ fun ColorBox(
 				1.dp,
 				color.copy(alpha = 1f),
 				shape = CircleShape
-			)
-			.clickable {
-				onSelect(color)
-			},
+			),
 		contentAlignment = Alignment.Center
 	) {
 		if (selected)
