@@ -14,15 +14,15 @@ abstract class MultiUserSettingsRepository <
 > (
 	private val _dataStore: DataStore<SettingsType>
 ) : SettingsRepository<UserSettingsType, UserSettingsBuilderType>, ViewModel() {
-	abstract fun getUserSettings(dataStore: SettingsType) : UserSettingsType
+	protected abstract fun getUserSettings(dataStore: SettingsType) : UserSettingsType
 
-	abstract fun updateUserSettings(currentData : SettingsType, userSettings: UserSettingsType) : SettingsType
+	protected abstract fun updateUserSettings(currentData : SettingsType, userSettings: UserSettingsType) : SettingsType
 
 	override fun getSettings(): Flow<UserSettingsType> {
 		return _dataStore.data.map { userSettings -> getUserSettings(userSettings) }
 	}
 
-	fun getAllSettings(): Flow<SettingsType> {
+	protected fun getAllSettings(): Flow<SettingsType> {
 		return _dataStore.data
 	}
 
