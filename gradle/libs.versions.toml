@@ -7,10 +7,10 @@ datastore = "1.1.7"
 espressoCore = "3.6.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 lifecycleViewmodelAndroid = "2.9.1"
 material3 = "1.3.2"
-mavenPublish = "0.32.0"
+mavenPublish = "0.33.0"
 protobufJavalite = "4.31.1"
 
 [libraries]
