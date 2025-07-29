@@ -16,7 +16,7 @@ abstract class MultiUserSettingsDataSource <
 ) : SettingsDataSource<UserSettingsType, UserSettingsBuilderType>, ViewModel() {
 	protected abstract fun getUserSettings(dataStore: SettingsType) : UserSettingsType
 
-	protected abstract fun updateUserSettings(currentData : SettingsType, userSettings: UserSettingsType) : SettingsType
+	protected abstract suspend fun updateUserSettings(currentData : SettingsType, userSettings: UserSettingsType) : SettingsType
 
 	override fun getSettings(): Flow<UserSettingsType> {
 		return _dataStore.data.map { userSettings -> getUserSettings(userSettings) }
