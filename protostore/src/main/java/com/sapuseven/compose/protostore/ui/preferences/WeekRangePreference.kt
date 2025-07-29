@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.google.protobuf.MessageLite
 import com.sapuseven.compose.protostore.R
-import com.sapuseven.compose.protostore.data.SettingsRepository
+import com.sapuseven.compose.protostore.data.SettingsDataSource
 import com.sapuseven.compose.protostore.ui.utils.SelectionState
 import com.sapuseven.compose.protostore.ui.utils.WeekRangePicker
 import com.sapuseven.compose.protostore.ui.utils.Weekday
@@ -37,7 +37,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> WeekRangePreferenc
 	summary: (@Composable () -> Unit)? = null,
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: @Composable ((value: Set<String>, enabled: Boolean) -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, ModelBuilder>,
+	settingsDataSource: SettingsDataSource<Model, ModelBuilder>,
 	value: (Model) -> Set<String>,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	enabledCondition: (Model) -> Boolean = { true },
@@ -73,7 +73,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> WeekRangePreferenc
 		},
 		leadingContent = leadingContent,
 		trailingContent = trailingContent,
-		settingsRepository = settingsRepository,
+		settingsDataSource = settingsDataSource,
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,
@@ -119,7 +119,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> WeekRangePreferenc
 					onClick = {
 						showDialog = false
 						scope.launch {
-							settingsRepository.updateSettings {
+							settingsDataSource.updateSettings {
 								onValueChange?.invoke(this, dialogValue)
 							}
 						}

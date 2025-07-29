@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.google.protobuf.MessageLite
-import com.sapuseven.compose.protostore.data.SettingsRepository
+import com.sapuseven.compose.protostore.data.SettingsDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -15,7 +15,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SwitchPreference(
 	summary: (@Composable () -> Unit)? = null,
 	supportingContent: @Composable ((value: Boolean, enabled: Boolean) -> Unit)? = null,
 	leadingContent: (@Composable () -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, ModelBuilder>,
+	settingsDataSource: SettingsDataSource<Model, ModelBuilder>,
 	value: (Model) -> Boolean,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	enabledCondition: (Model) -> Boolean = { true },
@@ -33,7 +33,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SwitchPreference(
 				checked = currentValue,
 				onCheckedChange = {
 					scope.launch {
-						settingsRepository.updateSettings {
+						settingsDataSource.updateSettings {
 							onValueChange?.invoke(this, it)
 						}
 					}
@@ -41,14 +41,14 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SwitchPreference(
 				enabled = enabled
 			)
 		},
-		settingsRepository = settingsRepository,
+		settingsDataSource = settingsDataSource,
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,
 		highlight = highlight,
 		onClick = { currentValue ->
 			scope.launch {
-				settingsRepository.updateSettings {
+				settingsDataSource.updateSettings {
 					onValueChange?.invoke(this, !currentValue)
 				}
 			}

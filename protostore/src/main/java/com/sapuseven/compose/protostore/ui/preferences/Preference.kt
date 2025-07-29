@@ -17,7 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import com.google.protobuf.MessageLite
-import com.sapuseven.compose.protostore.data.SettingsRepository
+import com.sapuseven.compose.protostore.data.SettingsDataSource
 import com.sapuseven.compose.protostore.ui.utils.LocalListItemColors
 import com.sapuseven.compose.protostore.ui.utils.conditional
 import com.sapuseven.compose.protostore.ui.utils.disabled
@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
  * 	This is usually implemented by other types of preferences that show their own input method.
  * @param leadingContent A composable to show in front of the preference. Usually an icon.
  * @param trailingContent A composable to show after the preference. Usually a switch or button.
- * @param settingsRepository The repository that contains the user settings.
+ * @param settingsDataSource The repository that contains the user settings.
  * @param value A function that returns the current value of the preference.
  * @param enabledCondition A function that returns a boolean indicating whether the preference should be enabled or not.
  * @param highlight A boolean indicating whether the preference should be highlighted or not.
@@ -51,7 +51,7 @@ fun <Model : MessageLite, Value> Preference(
 	supportingContent: @Composable ((value: Value, enabled: Boolean) -> Unit)? = null,
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: @Composable ((value: Value, enabled: Boolean) -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, *>,
+	settingsDataSource: SettingsDataSource<Model, *>,
 	value: (Model) -> Value,
 	enabledCondition: (Model) -> Boolean = { true },
 	highlight: Boolean = false,
@@ -59,10 +59,10 @@ fun <Model : MessageLite, Value> Preference(
 	onClick: ((value: Value) -> Unit)? = null,
 	modifier: Modifier = Modifier,
 ) {
-	val data by settingsRepository.getSettings().collectAsState(null)
+	val data by settingsDataSource.getSettings().collectAsState(null)
 	val interactionSource = remember { MutableInteractionSource() }
 
-	val isEnabled = remember { settingsRepository.getSettings().map { enabledCondition(it) } }.collectAsState(initial = true)
+	val isEnabled = remember { settingsDataSource.getSettings().map { enabledCondition(it) } }.collectAsState(initial = true)
 
 	if (highlight)
 		LaunchedEffect(Unit) {

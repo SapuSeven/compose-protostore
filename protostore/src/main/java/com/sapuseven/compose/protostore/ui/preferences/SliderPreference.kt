@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.protobuf.MessageLite
-import com.sapuseven.compose.protostore.data.SettingsRepository
+import com.sapuseven.compose.protostore.data.SettingsDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
@@ -27,7 +27,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SliderPreference(
 	summary: (@Composable () -> Unit)? = null,
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: @Composable ((value: Float, enabled: Boolean) -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, ModelBuilder>,
+	settingsDataSource: SettingsDataSource<Model, ModelBuilder>,
 	value: (Model) -> Float,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	enabledCondition: (Model) -> Boolean = { true },
@@ -53,7 +53,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SliderPreference(
 					value = currentValue,
 					onValueChange = {
 						scope.launch {
-							settingsRepository.updateSettings {
+							settingsDataSource.updateSettings {
 								onValueChange?.invoke(this, it)
 							}
 						}
@@ -81,7 +81,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> SliderPreference(
 		},
 		leadingContent = leadingContent,
 		trailingContent = trailingContent,
-		settingsRepository = settingsRepository,
+		settingsDataSource = settingsDataSource,
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,

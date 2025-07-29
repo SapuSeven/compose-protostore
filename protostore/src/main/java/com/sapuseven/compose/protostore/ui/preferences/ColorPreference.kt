@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
 import com.google.protobuf.MessageLite
 import com.sapuseven.compose.protostore.R
-import com.sapuseven.compose.protostore.data.SettingsRepository
+import com.sapuseven.compose.protostore.data.SettingsDataSource
 import com.sapuseven.compose.protostore.ui.utils.colorpicker.ColorPicker
 import com.sapuseven.compose.protostore.ui.utils.disabled
 import com.sapuseven.compose.protostore.ui.utils.ifNotNull
@@ -82,7 +82,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 	//supportingContent: @Composable ((value: Float, enabled: Boolean) -> Unit)? = null,
 	leadingContent: (@Composable () -> Unit)? = null,
 	//trailingContent: @Composable ((value: Float, enabled: Boolean) -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, ModelBuilder>,
+	settingsDataSource: SettingsDataSource<Model, ModelBuilder>,
 	value: (Model) -> Int,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	enabledCondition: (Model) -> Boolean = { true },
@@ -111,7 +111,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 					.border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
 			)
 		},
-		settingsRepository = settingsRepository,
+		settingsDataSource = settingsDataSource,
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,
@@ -245,7 +245,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ColorPreference(
 							onClick = {
 								showDialog = false
 								scope.launch {
-									settingsRepository.updateSettings {
+									settingsDataSource.updateSettings {
 										onValueChange?.invoke(this, dialogValue?.toArgb())
 									}
 								}

@@ -4,14 +4,13 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import com.google.protobuf.MessageLite
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 
-abstract class SingleUserSettingsRepository <
+abstract class SingleUserSettingsDataSource <
 	SettingsType : MessageLite,
 	SettingsBuilderType : MessageLite.Builder
 	> (
 	private val _dataStore: DataStore<SettingsType>
-) : SettingsRepository<SettingsType, SettingsBuilderType>, ViewModel() {
+) : SettingsDataSource<SettingsType, SettingsBuilderType>, ViewModel() {
 	override fun getSettings(): Flow<SettingsType> {
 		return _dataStore.data
 	}

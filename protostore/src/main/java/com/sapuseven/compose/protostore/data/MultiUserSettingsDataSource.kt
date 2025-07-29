@@ -6,14 +6,14 @@ import com.google.protobuf.MessageLite
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-abstract class MultiUserSettingsRepository <
+abstract class MultiUserSettingsDataSource <
 	SettingsType : MessageLite,
 	SettingsBuilderType : MessageLite.Builder,
 	UserSettingsType : MessageLite,
 	UserSettingsBuilderType : MessageLite.Builder,
 > (
 	private val _dataStore: DataStore<SettingsType>
-) : SettingsRepository<UserSettingsType, UserSettingsBuilderType>, ViewModel() {
+) : SettingsDataSource<UserSettingsType, UserSettingsBuilderType>, ViewModel() {
 	protected abstract fun getUserSettings(dataStore: SettingsType) : UserSettingsType
 
 	protected abstract fun updateUserSettings(currentData : SettingsType, userSettings: UserSettingsType) : SettingsType

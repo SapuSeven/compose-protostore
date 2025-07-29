@@ -128,7 +128,7 @@ object DataStoreModule {
 }
 
 // It can then be injected like this:
-class SettingsRepository @Inject constructor(
+class SettingsDataSource @Inject constructor(
 	private val dataStore: DataStore<Settings>
 )
 ```
@@ -137,7 +137,7 @@ class SettingsRepository @Inject constructor(
 > Whichever way you choose to construct the DataStore object, _make sure to use a singleton_.
 > Multiple instances of DataStore for one given file can break all DataStore functionality.
 
-### Define a settings model and repository
+### Define a settings model and data source
 
 > [!IMPORTANT]
 > Since this library focuses on a use case where dependency injection is available,
@@ -160,13 +160,13 @@ message Settings {
 
 ```
 
-Then you can define a ViewModel extending `SingleUserSettingsRepository` with your defined type:
+Then you can define a ViewModel extending `SingleUserSettingsDataSource` with your defined type:
 
 ```kotlin
 @HiltViewModel
 class SettingsScreenViewModel @Inject constructor(
 	dataStore: DataStore<Settings>
-) : SingleUserSettingsRepository<Settings, Settings.Builder>(dataStore) {
+) : SingleUserSettingsDataSource<Settings, Settings.Builder>(dataStore) {
 	override fun getSettingsDefaults() = UserSettings.newBuilder().apply {
 		// assign default values here
 	}
@@ -195,13 +195,13 @@ message Settings {
 }
 ```
 
-Then you can define a ViewModel extending `MultiUserSettingsRepository` with your defined types:
+Then you can define a ViewModel extending `MultiUserSettingsDataSource` with your defined types:
 
 ```kotlin
 @HiltViewModel
 class SettingsScreenViewModel @Inject constructor(
 	dataStore: DataStore<Settings>
-) : MultiUserSettingsRepository<Settings, Settings.Builder, UserSettings, UserSettings.Builder>(dataStore) {
+) : MultiUserSettingsDataSource<Settings, Settings.Builder, UserSettings, UserSettings.Builder>(dataStore) {
 	private val userId = -1;// set your active user id here
 
 	override fun getSettings(dataStore: Settings) : UserSettings {
@@ -231,7 +231,7 @@ fun Settings() {
 	VerticalScrollColumn {
 		SwitchPreference(
 			title = { Text("Example switch") },
-			settingsRepository = viewModel,
+			settingsDataSource = viewModel,
 			value = { it.exampleValue },
 			onCheckedChange = { exampleValue = it }
 		)
@@ -241,19 +241,19 @@ fun Settings() {
 
 ## Usage: Accessing settings in your app
 
-To access the stored values, you need to get an instance of your `SettingsRepository` implementation.
+To access the stored values, you need to get an instance of your `SettingsDataSource` implementation.
 
 You can then call `getSettings()` to get a flow containing all settings, which will update if the settings are changed:
 
 ```kotlin
 scope.launch {
-    settingsRepository.getSettings().collect { settings ->
+    settingsDataSource.getSettings().collect { settings ->
         val exampleValue = settings.exampleValue
         // TODO: Do something with exampleValue
     }
     
     // You can transform and process the flow however you need, for example:
-    settingsRepository.getSettings().map { it.exampleValue }.first()
+    settingsDataSource.getSettings().map { it.exampleValue }.first()
 }
 ```
 

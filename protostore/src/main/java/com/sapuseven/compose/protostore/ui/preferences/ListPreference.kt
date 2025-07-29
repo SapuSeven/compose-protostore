@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import com.google.protobuf.MessageLite
 import com.sapuseven.compose.protostore.R
-import com.sapuseven.compose.protostore.data.SettingsRepository
+import com.sapuseven.compose.protostore.data.SettingsDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -25,7 +25,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ListPreference(
 	supportingContent: @Composable ((value: Pair<String, String>, enabled: Boolean) -> Unit)? = null,
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: (@Composable (value: String, enabled: Boolean) -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, ModelBuilder>,
+	settingsDataSource: SettingsDataSource<Model, ModelBuilder>,
 	value: (Model) -> String,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	enabledCondition: (Model) -> Boolean = { true },
@@ -51,7 +51,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ListPreference(
 		},
 		leadingContent = leadingContent,
 		trailingContent = trailingContent,
-		settingsRepository = settingsRepository,
+		settingsDataSource = settingsDataSource,
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,
@@ -79,7 +79,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ListPreference(
 								) {
 									showDialog = false
 									scope.launch {
-										settingsRepository.updateSettings {
+										settingsDataSource.updateSettings {
 											onValueChange?.invoke(this, it)
 										}
 									}
@@ -91,7 +91,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> ListPreference(
 								onClick = {
 									showDialog = false
 									scope.launch {
-										settingsRepository.updateSettings {
+										settingsDataSource.updateSettings {
 											onValueChange?.invoke(this, it)
 										}
 									}
@@ -125,7 +125,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> MultiSelectListPre
 	supportingContent: @Composable ((value: Set<String>, enabled: Boolean) -> Unit)? = null,
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: (@Composable (value: Set<String>, enabled: Boolean) -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, ModelBuilder>,
+	settingsDataSource: SettingsDataSource<Model, ModelBuilder>,
 	value: (Model) -> Set<String>,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	enabledCondition: (Model) -> Boolean = { true },
@@ -145,7 +145,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> MultiSelectListPre
 		supportingContent = supportingContent,
 		leadingContent = leadingContent,
 		trailingContent = trailingContent,
-		settingsRepository = settingsRepository,
+		settingsDataSource = settingsDataSource,
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,
@@ -197,7 +197,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> MultiSelectListPre
 					onClick = {
 						showDialog = false
 						scope.launch {
-							settingsRepository.updateSettings {
+							settingsDataSource.updateSettings {
 								onValueChange?.invoke(this, dialogValues.filter { it.value }.keys)
 							}
 						}

@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.google.protobuf.MessageLite
 import com.sapuseven.compose.protostore.R
-import com.sapuseven.compose.protostore.data.SettingsRepository
+import com.sapuseven.compose.protostore.data.SettingsDataSource
 import com.sapuseven.compose.protostore.ui.utils.disabled
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -41,7 +41,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> InputPreference(
 	},
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: (@Composable (value: String, enabled: Boolean) -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, ModelBuilder>,
+	settingsDataSource: SettingsDataSource<Model, ModelBuilder>,
 	value: (Model) -> String,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	enabledCondition: (Model) -> Boolean = { true },
@@ -62,7 +62,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> InputPreference(
 		},
 		leadingContent = leadingContent,
 		trailingContent = trailingContent,
-		settingsRepository = settingsRepository,
+		settingsDataSource = settingsDataSource,
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,
@@ -82,7 +82,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> InputPreference(
 			onConfirm = {
 				showDialog = false
 				scope.launch {
-					settingsRepository.updateSettings {
+					settingsDataSource.updateSettings {
 						onValueChange?.invoke(this, input)
 					}
 				}
@@ -112,7 +112,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> NumericInputPrefer
 	},
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: (@Composable (value: Int, enabled: Boolean) -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, ModelBuilder>,
+	settingsDataSource: SettingsDataSource<Model, ModelBuilder>,
 	value: (Model) -> Int,
 	unit: String? = null,
 	scope: CoroutineScope = rememberCoroutineScope(),
@@ -132,7 +132,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> NumericInputPrefer
 		},
 		leadingContent = leadingContent,
 		trailingContent = trailingContent,
-		settingsRepository = settingsRepository,
+		settingsDataSource = settingsDataSource,
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,
@@ -151,7 +151,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> NumericInputPrefer
 			onConfirm = {
 				showDialog = false
 				scope.launch {
-					settingsRepository.updateSettings {
+					settingsDataSource.updateSettings {
 						onValueChange?.invoke(this, input.toIntOrNull() ?: 0)
 					}
 				}
@@ -194,7 +194,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> RangeInputPreferen
 	},
 	leadingContent: (@Composable () -> Unit)? = null,
 	trailingContent: (@Composable (value: String, enabled: Boolean) -> Unit)? = null,
-	settingsRepository: SettingsRepository<Model, ModelBuilder>,
+	settingsDataSource: SettingsDataSource<Model, ModelBuilder>,
 	value: (Model) -> String,
 	scope: CoroutineScope = rememberCoroutineScope(),
 	enabledCondition: (Model) -> Boolean = { true },
@@ -214,7 +214,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> RangeInputPreferen
 		},
 		leadingContent = leadingContent,
 		trailingContent = trailingContent,
-		settingsRepository = settingsRepository,
+		settingsDataSource = settingsDataSource,
 		value = value,
 		scope = scope,
 		enabledCondition = enabledCondition,
@@ -235,7 +235,7 @@ fun <Model : MessageLite, ModelBuilder : MessageLite.Builder> RangeInputPreferen
 			onConfirm = {
 				showDialog = false
 				scope.launch {
-					settingsRepository.updateSettings {
+					settingsDataSource.updateSettings {
 						onValueChange?.invoke(
 							this,
 							if (first.isNotBlank() && second.isNotBlank()) "$first-$second" else ""
