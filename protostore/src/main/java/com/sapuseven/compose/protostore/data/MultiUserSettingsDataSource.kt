@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.map
 
 abstract class MultiUserSettingsDataSource <
 	SettingsType : MessageLite,
-	SettingsBuilderType : MessageLite.Builder,
 	UserSettingsType : MessageLite,
 	UserSettingsBuilderType : MessageLite.Builder,
 > (
@@ -19,7 +18,7 @@ abstract class MultiUserSettingsDataSource <
 	protected abstract suspend fun updateUserSettings(currentData : SettingsType, userSettings: UserSettingsType) : SettingsType
 
 	override fun getSettings(): Flow<UserSettingsType> {
-		return _dataStore.data.map { userSettings -> getUserSettings(userSettings) }
+		return _dataStore.data.map(this::getUserSettings)
 	}
 
 	protected fun getAllSettings(): Flow<SettingsType> {
