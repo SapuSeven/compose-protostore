@@ -1,7 +1,6 @@
 package com.sapuseven.compose.protostore.data
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.ViewModel
 import com.google.protobuf.MessageLite
 import kotlinx.coroutines.flow.Flow
 
@@ -10,7 +9,7 @@ abstract class SingleUserSettingsDataSource <
 	SettingsBuilderType : MessageLite.Builder
 	> (
 	private val _dataStore: DataStore<SettingsType>
-) : SettingsDataSource<SettingsType, SettingsBuilderType>, ViewModel() {
+) : SettingsDataSource<SettingsType, SettingsBuilderType> {
 	override fun getSettings(): Flow<SettingsType> {
 		return _dataStore.data
 	}

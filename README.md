@@ -142,7 +142,7 @@ class SettingsDataSource @Inject constructor(
 > [!IMPORTANT]
 > Since this library focuses on a use case where dependency injection is available,
 > this section requires your app to utilize Hilt and ViewModels.
-> It may be possible to implement it without these dependencies, but it is untested and currently not supported.
+> It is possible to implement it without these dependencies, but it is currently undocumented.
 
 #### Single-user settings
 
@@ -166,7 +166,7 @@ Then you can define a ViewModel extending `SingleUserSettingsDataSource` with yo
 @HiltViewModel
 class SettingsScreenViewModel @Inject constructor(
 	dataStore: DataStore<Settings>
-) : SingleUserSettingsDataSource<Settings, Settings.Builder>(dataStore) {
+) : SingleUserSettingsDataSource<Settings, Settings.Builder>(dataStore), ViewModel() {
 	override fun getSettingsDefaults() = UserSettings.newBuilder().apply {
 		// assign default values here
 	}

@@ -1,7 +1,6 @@
 package com.sapuseven.compose.protostore.data
 
 import androidx.datastore.core.DataStore
-import androidx.lifecycle.ViewModel
 import com.google.protobuf.MessageLite
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -12,7 +11,7 @@ abstract class MultiUserSettingsDataSource <
 	UserSettingsBuilderType : MessageLite.Builder,
 > (
 	private val _dataStore: DataStore<SettingsType>
-) : SettingsDataSource<UserSettingsType, UserSettingsBuilderType>, ViewModel() {
+) : SettingsDataSource<UserSettingsType, UserSettingsBuilderType> {
 	protected abstract fun getUserSettings(dataStore: SettingsType) : UserSettingsType
 
 	protected abstract suspend fun updateUserSettings(currentData : SettingsType, userSettings: UserSettingsType) : SettingsType
