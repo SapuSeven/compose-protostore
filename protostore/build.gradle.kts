@@ -8,7 +8,7 @@ plugins {
 }
 
 mavenPublishing {
-    coordinates("com.sapuseven.compose", "protostore", "0.2.0")
+    coordinates("com.sapuseven.compose", "protostore", "0.3.0")
 
     configure(AndroidSingleVariantLibrary(
         variant = "release",
@@ -63,7 +63,7 @@ publishing {
 
 android {
     namespace = "com.sapuseven.compose.protostore"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 21
